@@ -1,0 +1,36 @@
+@PostMapping("/upload")
+    public String uploadFile(@RequestParam("file") MultipartFile multipartfile) throws IOException {
+
+//        if (file.isEmpty()) {
+//            return "File is empty.";
+//        } else {
+////            File file1 = new File(Objects.requireNonNull(file.getOriginalFilename()));
+////            Path path = Paths.get("C:\\Users\\tjayasekara\\Desktop\\filedemo\\upload\\" + file1.getName());
+////            byte[] bytes = file.getBytes();
+////            Files.write(path, bytes);
+//            return "uploaded";
+//
+//
+//        }
+
+
+        byte[] bufferedbytes = new byte[1024];
+        File file1 = new File(Objects.requireNonNull(multipartfile.getOriginalFilename()));
+        File file = new File("C:\\Users\\tjayasekara\\Desktop\\filedemo\\upload\\" + file1.getName());
+        FileOutputStream outStream;
+        int count;
+        try {
+            BufferedInputStream fileInputStream = new BufferedInputStream(multipartfile.getInputStream());
+            outStream = new FileOutputStream(file);
+            while ((count = fileInputStream.read(bufferedbytes)) != -1) {
+                outStream.write(bufferedbytes, 0, count);
+
+            }
+            outStream.close();
+
+            return "uploaded";
+        } catch (IOException e) {
+            return "failed to upload";
+
+        }
+    }
